@@ -1,3 +1,3 @@
-# DagensDashboard skulle vise trækfugle og fugleinfluenzaudbrud i Europa. Nogle gange må man bare se i øjnene, at det er for svært at finde åbne, frie og tilgængelige data. 
+#DagensDashboard skulle vise trækfugle og fugleinfluenzaudbrud i Europa. Nogle gange må man bare se i øjnene, at det er for svært at finde åbne, frie og tilgængelige data. 
 
 Man kan se hvad jeg kunne finde her: https://steenhulthin.github.io/fugleflugt/ , men jeg synes godt, vi kan blive bedre til at dele data i Europa. 
