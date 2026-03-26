@@ -32,6 +32,10 @@ const elements = {
   migrationCount: document.querySelector("#migration-count"),
   outbreakCount: document.querySelector("#outbreak-count"),
   mapTitle: document.querySelector("#map-title"),
+  mapSubtitle: document.querySelector("#map-subtitle"),
+  migrationLow: document.querySelector("#migration-low"),
+  migrationMid: document.querySelector("#migration-mid"),
+  migrationHigh: document.querySelector("#migration-high"),
 };
 
 const emptyCollection = {
@@ -41,8 +45,9 @@ const emptyCollection = {
 
 const state = {
   background: emptyCollection,
+  countryPolygons: emptyCollection,
+  countryMonthRows: [],
   timeline: [],
-  migration: emptyCollection,
   outbreaks: emptyCollection,
   currentIndex: 0,
   playing: false,
@@ -54,6 +59,20 @@ const monthFormatter = new Intl.DateTimeFormat("en", {
   year: "numeric",
   timeZone: "UTC",
 });
+
+const outbreakRadius = [
+  "interpolate",
+  ["linear"],
+  ["coalesce", ["get", "birds_affected"], 0],
+  0,
+  6,
+  5000,
+  10,
+  25000,
+  16,
+  75000,
+  24,
+];
 
 function labelFromMonth(month) {
   return monthFormatter.format(new Date(`${month}-01T00:00:00Z`));
@@ -73,12 +92,17 @@ function filterByMonth(collection, month) {
 }
 
 function syncLayerVisibility() {
-  if (!map.getLayer("migration-hotspots")) {
+  if (!map.getLayer("migration-choropleth")) {
     return;
   }
 
   map.setLayoutProperty(
-    "migration-hotspots",
+    "migration-choropleth",
+    "visibility",
+    elements.migrationToggle.checked ? "visible" : "none",
+  );
+  map.setLayoutProperty(
+    "migration-choropleth-outline",
     "visibility",
     elements.migrationToggle.checked ? "visible" : "none",
   );
@@ -112,22 +136,89 @@ async function loadBackground() {
 }
 
 function updateSummary(migrationData, outbreakData) {
-  elements.migrationCount.textContent = String(migrationData.features.length);
+  elements.migrationCount.textContent = String(
+    migrationData.features.filter((feature) => feature.properties.mean_class !== null)
+      .length,
+  );
   elements.outbreakCount.textContent = String(outbreakData.features.length);
+}
+
+function updateLegendValues(migrationData) {
+  const values = migrationData.features
+    .map((feature) => feature.properties.mean_class)
+    .filter((value) => value !== null);
+
+  if (!values.length) {
+    elements.migrationLow.textContent = "No data";
+    elements.migrationMid.textContent = "No data";
+    elements.migrationHigh.textContent = "No data";
+    return { low: 60, mid: 63, high: 66 };
+  }
+
+  const low = Math.min(...values);
+  const rawHigh = Math.max(...values);
+  const high = rawHigh === low ? low + 1 : rawHigh;
+  const mid = (low + high) / 2;
+
+  elements.migrationLow.textContent = low.toFixed(1);
+  elements.migrationMid.textContent = mid.toFixed(1);
+  elements.migrationHigh.textContent = high.toFixed(1);
+
+  return { low, mid, high };
+}
+
+function updateMigrationStyle(extent) {
+  if (!map.getLayer("migration-choropleth")) {
+    return;
+  }
+
+  map.setPaintProperty("migration-choropleth", "fill-color", [
+    "interpolate",
+    ["linear"],
+    ["coalesce", ["get", "mean_class"], extent.low],
+    extent.low,
+    "#f7e8b3",
+    extent.mid,
+    "#d59a3a",
+    extent.high,
+    "#8d4e0f",
+  ]);
 }
 
 function updateMonth() {
   const month = state.timeline[state.currentIndex];
   const label = labelFromMonth(month);
-  const migrationData = filterByMonth(state.migration, month);
+  const migrationData = featureCollection(
+    state.countryPolygons.features.map((feature) => {
+      const match = state.countryMonthRows.find(
+        (row) =>
+          row.month === month && row.iso_a3 === feature.properties.iso_a3,
+      );
+
+      return {
+        ...feature,
+        properties: {
+          ...feature.properties,
+          mean_class: match?.mean_class ?? null,
+          cell_samples: match?.cell_samples ?? 0,
+          species_name: match?.species_name ?? "Barn Swallow",
+          month,
+        },
+      };
+    }),
+  );
   const outbreakData = filterByMonth(state.outbreaks, month);
+  const extent = updateLegendValues(migrationData);
 
   elements.monthLabel.textContent = label;
   elements.mapTitle.textContent = `${label} overview`;
+  elements.mapSubtitle.textContent =
+    `Barn Swallow migration intensity by country for ${label}, with poultry outbreak circles scaled by estimated outbreak size.`;
   elements.monthSlider.value = String(state.currentIndex);
 
   setSourceData("migration", migrationData);
   setSourceData("outbreaks", outbreakData);
+  updateMigrationStyle(extent);
   updateSummary(migrationData, outbreakData);
 }
 
@@ -180,7 +271,7 @@ function addMapLayers() {
 
   map.addSource("migration", {
     type: "geojson",
-    data: emptyCollection,
+    data: state.countryPolygons,
   });
 
   map.addSource("outbreaks", {
@@ -209,33 +300,43 @@ function addMapLayers() {
   });
 
   map.addLayer({
-    id: "migration-hotspots",
-    type: "circle",
+    id: "migration-choropleth",
+    type: "fill",
     source: "migration",
     paint: {
-      "circle-color": [
+      "fill-color": [
         "interpolate",
         ["linear"],
-        ["get", "intensity"],
-        20,
-        "#bde6df",
+        ["coalesce", ["get", "mean_class"], 60],
         60,
-        "#3ca89c",
-        100,
-        "#16625e",
+        "#f7e8b3",
+        63,
+        "#d59a3a",
+        66,
+        "#8d4e0f",
       ],
-      "circle-radius": [
-        "interpolate",
-        ["linear"],
-        ["zoom"],
-        3,
-        ["interpolate", ["linear"], ["get", "intensity"], 20, 6, 100, 20],
-        6,
-        ["interpolate", ["linear"], ["get", "intensity"], 20, 11, 100, 32],
+      "fill-opacity": [
+        "case",
+        ["has", "mean_class"],
+        0.78,
+        0,
       ],
-      "circle-opacity": 0.82,
-      "circle-stroke-width": 1.5,
-      "circle-stroke-color": "rgba(12, 46, 44, 0.45)",
+    },
+  });
+
+  map.addLayer({
+    id: "migration-choropleth-outline",
+    type: "line",
+    source: "migration",
+    paint: {
+      "line-color": "rgba(89, 52, 17, 0.28)",
+      "line-width": 0.8,
+      "line-opacity": [
+        "case",
+        ["has", "mean_class"],
+        0.9,
+        0,
+      ],
     },
   });
 
@@ -245,15 +346,7 @@ function addMapLayers() {
     source: "outbreaks",
     paint: {
       "circle-color": "#d9633f",
-      "circle-radius": [
-        "interpolate",
-        ["linear"],
-        ["zoom"],
-        3,
-        6,
-        6,
-        10,
-      ],
+      "circle-radius": outbreakRadius,
       "circle-stroke-width": 2,
       "circle-stroke-color": "#fff0eb",
       "circle-opacity": 0.92,
@@ -261,13 +354,15 @@ function addMapLayers() {
   });
 
   bindPopup(
-    "migration-hotspots",
+    "migration-choropleth",
     (props) => `
       <div class="popup">
-        <h3>${props.corridor}</h3>
+        <h3>${props.name}</h3>
         <p><strong>Month:</strong> ${labelFromMonth(props.month)}</p>
-        <p><strong>Species group:</strong> ${props.species_group}</p>
-        <p><strong>Intensity:</strong> ${props.intensity}</p>
+        <p><strong>Species:</strong> ${props.species_name}</p>
+        <p><strong>Metric:</strong> Mean Barn Swallow count class</p>
+        <p><strong>Mean count class:</strong> ${props.mean_class ?? "No data"}</p>
+        <p><strong>Cell samples:</strong> ${props.cell_samples}</p>
       </div>
     `,
   );
@@ -280,6 +375,7 @@ function addMapLayers() {
         <p><strong>Month:</strong> ${labelFromMonth(props.month)}</p>
         <p><strong>Subtype:</strong> ${props.subtype}</p>
         <p><strong>Category:</strong> ${props.category}</p>
+        <p><strong>Estimated birds affected:</strong> ${props.birds_affected.toLocaleString()}</p>
       </div>
     `,
   );
@@ -304,22 +400,35 @@ function wireControls() {
 }
 
 async function loadData() {
-  const [timelineResponse, migrationResponse, outbreaksResponse] =
+  const [
+    timelineResponse,
+    countryPolygonsResponse,
+    countryMonthResponse,
+    outbreaksResponse,
+  ] =
     await Promise.all([
       fetch("./data/processed/timeline.json"),
-      fetch("./data/processed/migration_monthly.geojson"),
+      fetch("./data/processed/europe_countries.geojson"),
+      fetch("./data/processed/migration_country_month.json"),
       fetch("./data/processed/poultry_outbreaks.geojson"),
     ]);
 
-  const [timelinePayload, migrationPayload, outbreaksPayload] =
+  const [
+    timelinePayload,
+    countryPolygonsPayload,
+    countryMonthPayload,
+    outbreaksPayload,
+  ] =
     await Promise.all([
       timelineResponse.json(),
-      migrationResponse.json(),
+      countryPolygonsResponse.json(),
+      countryMonthResponse.json(),
       outbreaksResponse.json(),
     ]);
 
   state.timeline = timelinePayload.months;
-  state.migration = migrationPayload;
+  state.countryPolygons = countryPolygonsPayload;
+  state.countryMonthRows = countryMonthPayload.rows;
   state.outbreaks = outbreaksPayload;
 
   elements.monthSlider.max = String(state.timeline.length - 1);

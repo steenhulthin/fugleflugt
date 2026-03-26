@@ -54,22 +54,23 @@
           </div>
           <label class="toggle">
             <input id="toggle-migration" type="checkbox" checked />
-            <span>Migration hotspots</span>
+            <span>Migration choropleth</span>
           </label>
           <label class="toggle">
             <input id="toggle-outbreaks" type="checkbox" checked />
             <span>Poultry outbreaks</span>
           </label>
           <p class="note">
-            The current migration layer uses local prototype monthly hotspots so
-            the front end is usable while we finish extracting a structured
-            Europe-wide migration dataset.
+            The migration layer is now joined to country polygons from a real
+            EuroBirdPortal extraction for Barn Swallow monthly count classes.
+            Coverage is still limited, so this should be treated as a first
+            extraction pass rather than a finished product dataset.
           </p>
         </section>
 
         <section class="card stats-grid">
           <div>
-            <p class="stat-label">Visible migration cells</p>
+            <p class="stat-label">Colored countries</p>
             <p id="migration-count" class="stat-value">0</p>
           </div>
           <div>
@@ -80,16 +81,20 @@
 
         <section class="card">
           <div class="card-heading">
-            <h2>Legend</h2>
+            <h2>What You Are Seeing</h2>
           </div>
-          <div class="legend-item">
-            <span class="legend-swatch legend-swatch-migration"></span>
-            <span>Migration hotspot intensity</span>
-          </div>
-          <div class="legend-item">
-            <span class="legend-swatch legend-swatch-outbreak"></span>
-            <span>Poultry outbreak</span>
-          </div>
+          <p class="note">
+            Bird migration currently shows <strong>Barn Swallow</strong>
+            (`HIRRUS`) only.
+          </p>
+          <p class="note">
+            Country color shows the monthly EuroBirdPortal
+            <strong>mean count class</strong> for Barn Swallow.
+          </p>
+          <p class="note">
+            Poultry outbreak circles are scaled by estimated outbreak size, so
+            a larger circle means a larger outbreak.
+          </p>
         </section>
 
         <section class="card sources-card">
@@ -125,6 +130,10 @@
           <div>
             <p class="eyebrow">Europe</p>
             <h2 id="map-title">Monthly view</h2>
+            <p id="map-subtitle" class="map-subtitle">
+              Barn Swallow migration intensity by country, with scaled poultry
+              outbreaks.
+            </p>
           </div>
           <p class="map-caption">
             Migration and outbreak layers update together as you move through
@@ -132,6 +141,38 @@
           </p>
         </div>
         <div id="map"></div>
+        <div class="map-legend" aria-live="polite">
+          <p class="map-legend-title">Map Legend</p>
+          <p class="map-legend-copy">
+            Migration layer: Barn Swallow (`HIRRUS`) monthly mean count class.
+          </p>
+          <div class="map-legend-section">
+            <p class="map-legend-label">Country color</p>
+            <div class="legend-ramp">
+              <span class="legend-ramp-stop legend-ramp-low"></span>
+              <span class="legend-ramp-stop legend-ramp-mid"></span>
+              <span class="legend-ramp-stop legend-ramp-high"></span>
+            </div>
+            <div class="legend-ramp-values">
+              <span id="migration-low">Low</span>
+              <span id="migration-mid">Mid</span>
+              <span id="migration-high">High</span>
+            </div>
+          </div>
+          <div class="map-legend-section">
+            <p class="map-legend-label">Poultry outbreak size</p>
+            <div class="outbreak-scale">
+              <span class="outbreak-scale-dot outbreak-scale-small"></span>
+              <span class="outbreak-scale-dot outbreak-scale-medium"></span>
+              <span class="outbreak-scale-dot outbreak-scale-large"></span>
+            </div>
+            <div class="legend-ramp-values">
+              <span>Small</span>
+              <span>Medium</span>
+              <span>Large</span>
+            </div>
+          </div>
+        </div>
       </main>
     </div>
 

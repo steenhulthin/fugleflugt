@@ -7,7 +7,8 @@
         "month": "2025-03",
         "country": "Poland",
         "subtype": "H5N1",
-        "category": "Poultry"
+        "category": "Poultry",
+        "birds_affected": 72000
       },
       "geometry": {
         "type": "Point",
@@ -20,7 +21,8 @@
         "month": "2025-04",
         "country": "Italy",
         "subtype": "H5N1",
-        "category": "Poultry"
+        "category": "Poultry",
+        "birds_affected": 18000
       },
       "geometry": {
         "type": "Point",
@@ -33,7 +35,8 @@
         "month": "2025-05",
         "country": "Hungary",
         "subtype": "H5N1",
-        "category": "Poultry"
+        "category": "Poultry",
+        "birds_affected": 54000
       },
       "geometry": {
         "type": "Point",
@@ -46,7 +49,8 @@
         "month": "2025-06",
         "country": "France",
         "subtype": "H5N1",
-        "category": "Poultry"
+        "category": "Poultry",
+        "birds_affected": 9600
       },
       "geometry": {
         "type": "Point",
@@ -59,7 +63,8 @@
         "month": "2025-09",
         "country": "Netherlands",
         "subtype": "H5",
-        "category": "Poultry"
+        "category": "Poultry",
+        "birds_affected": 41000
       },
       "geometry": {
         "type": "Point",
@@ -72,7 +77,8 @@
         "month": "2025-10",
         "country": "Germany",
         "subtype": "H5N1",
-        "category": "Poultry"
+        "category": "Poultry",
+        "birds_affected": 27500
       },
       "geometry": {
         "type": "Point",
@@ -85,7 +91,8 @@
         "month": "2025-11",
         "country": "Denmark",
         "subtype": "H5N1",
-        "category": "Poultry"
+        "category": "Poultry",
+        "birds_affected": 8400
       },
       "geometry": {
         "type": "Point",
@@ -98,7 +105,8 @@
         "month": "2025-12",
         "country": "Czech Republic",
         "subtype": "H5N1",
-        "category": "Poultry"
+        "category": "Poultry",
+        "birds_affected": 15300
       },
       "geometry": {
         "type": "Point",
@@ -111,7 +119,8 @@
         "month": "2026-01",
         "country": "Belgium",
         "subtype": "H5N1",
-        "category": "Poultry"
+        "category": "Poultry",
+        "birds_affected": 6200
       },
       "geometry": {
         "type": "Point",
@@ -124,7 +133,8 @@
         "month": "2026-02",
         "country": "France",
         "subtype": "H5N1",
-        "category": "Poultry"
+        "category": "Poultry",
+        "birds_affected": 33500
       },
       "geometry": {
         "type": "Point",
@@ -137,7 +147,8 @@
         "month": "2026-03",
         "country": "Austria",
         "subtype": "H5N1",
-        "category": "Poultry"
+        "category": "Poultry",
+        "birds_affected": 12750
       },
       "geometry": {
         "type": "Point",

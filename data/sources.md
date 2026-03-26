@@ -17,6 +17,11 @@
   - https://www.eurobirdportal.org/ger/de/
   - Public migration viewer for Europe
   - Public page and supporting JavaScript downloaded locally for source inspection
+  - The current choropleth extraction uses EuroBirdPortal CARTO torque tiles for `Barn Swallow` (`HIRRUS`) count classes in `2025` and `2026`
+
+- Natural Earth countries
+  - https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_110m_admin_0_countries.geojson
+  - Used for the country-level aggregation join that turns migration grid cells into a choropleth table
 
 ## Avian Flu
 
