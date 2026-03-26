@@ -4,4 +4,6 @@ Download the project data locally rather than depending on a live backend at run
 
 The product should be delivered as a static HTML application.
 
-Choose and recommend a mapping framework that works well for a static site.
+Use `MapLibre GL JS` as the mapping framework.
+
+`MapLibre GL JS` is a good fit because it works well in a static site, supports local GeoJSON and tiled data, and gives us enough performance headroom for a Europe-wide time-based map.
