@@ -3,10 +3,131 @@
   "species_name": "Barn Swallow",
   "metric": "mean_count_class",
   "years": [
+    2024,
     2025,
     2026
   ],
   "rows": [
+    {
+      "iso_a3": "GRC",
+      "country": "Greece",
+      "month": "2024-01",
+      "mean_class": 64.58,
+      "cell_samples": 36,
+      "species_code": "HIRRUS",
+      "species_name": "Barn Swallow",
+      "metric": "mean_count_class"
+    },
+    {
+      "iso_a3": "GRC",
+      "country": "Greece",
+      "month": "2024-02",
+      "mean_class": 63.97,
+      "cell_samples": 29,
+      "species_code": "HIRRUS",
+      "species_name": "Barn Swallow",
+      "metric": "mean_count_class"
+    },
+    {
+      "iso_a3": "GRC",
+      "country": "Greece",
+      "month": "2024-03",
+      "mean_class": 63.57,
+      "cell_samples": 44,
+      "species_code": "HIRRUS",
+      "species_name": "Barn Swallow",
+      "metric": "mean_count_class"
+    },
+    {
+      "iso_a3": "GRC",
+      "country": "Greece",
+      "month": "2024-04",
+      "mean_class": 63.57,
+      "cell_samples": 72,
+      "species_code": "HIRRUS",
+      "species_name": "Barn Swallow",
+      "metric": "mean_count_class"
+    },
+    {
+      "iso_a3": "GRC",
+      "country": "Greece",
+      "month": "2024-05",
+      "mean_class": 63.56,
+      "cell_samples": 52,
+      "species_code": "HIRRUS",
+      "species_name": "Barn Swallow",
+      "metric": "mean_count_class"
+    },
+    {
+      "iso_a3": "GRC",
+      "country": "Greece",
+      "month": "2024-06",
+      "mean_class": 63.66,
+      "cell_samples": 41,
+      "species_code": "HIRRUS",
+      "species_name": "Barn Swallow",
+      "metric": "mean_count_class"
+    },
+    {
+      "iso_a3": "GRC",
+      "country": "Greece",
+      "month": "2024-07",
+      "mean_class": 63.79,
+      "cell_samples": 42,
+      "species_code": "HIRRUS",
+      "species_name": "Barn Swallow",
+      "metric": "mean_count_class"
+    },
+    {
+      "iso_a3": "GRC",
+      "country": "Greece",
+      "month": "2024-08",
+      "mean_class": 63.87,
+      "cell_samples": 38,
+      "species_code": "HIRRUS",
+      "species_name": "Barn Swallow",
+      "metric": "mean_count_class"
+    },
+    {
+      "iso_a3": "GRC",
+      "country": "Greece",
+      "month": "2024-09",
+      "mean_class": 63.81,
+      "cell_samples": 67,
+      "species_code": "HIRRUS",
+      "species_name": "Barn Swallow",
+      "metric": "mean_count_class"
+    },
+    {
+      "iso_a3": "GRC",
+      "country": "Greece",
+      "month": "2024-10",
+      "mean_class": 64.45,
+      "cell_samples": 31,
+      "species_code": "HIRRUS",
+      "species_name": "Barn Swallow",
+      "metric": "mean_count_class"
+    },
+    {
+      "iso_a3": "GRC",
+      "country": "Greece",
+      "month": "2024-11",
+      "mean_class": 64.1,
+      "cell_samples": 29,
+      "species_code": "HIRRUS",
+      "species_name": "Barn Swallow",
+      "metric": "mean_count_class"
+    },
+    {
+      "iso_a3": "GRC",
+      "country": "Greece",
+      "month": "2024-12",
+      "mean_class": 64.55,
+      "cell_samples": 33,
+      "species_code": "HIRRUS",
+      "species_name": "Barn Swallow",
+      "metric": "mean_count_class"
+    },
     {
       "iso_a3": "GRC",
       "country": "Greece",
@@ -153,6 +274,116 @@
       "month": "2026-03",
       "mean_class": 63.26,
       "cell_samples": 38,
+      "species_code": "HIRRUS",
+      "species_name": "Barn Swallow",
+      "metric": "mean_count_class"
+    },
+    {
+      "iso_a3": "ITA",
+      "country": "Italy",
+      "month": "2024-02",
+      "mean_class": 61.5,
+      "cell_samples": 2,
+      "species_code": "HIRRUS",
+      "species_name": "Barn Swallow",
+      "metric": "mean_count_class"
+    },
+    {
+      "iso_a3": "ITA",
+      "country": "Italy",
+      "month": "2024-03",
+      "mean_class": 62.73,
+      "cell_samples": 63,
+      "species_code": "HIRRUS",
+      "species_name": "Barn Swallow",
+      "metric": "mean_count_class"
+    },
+    {
+      "iso_a3": "ITA",
+      "country": "Italy",
+      "month": "2024-04",
+      "mean_class": 63.32,
+      "cell_samples": 100,
+      "species_code": "HIRRUS",
+      "species_name": "Barn Swallow",
+      "metric": "mean_count_class"
+    },
+    {
+      "iso_a3": "ITA",
+      "country": "Italy",
+      "month": "2024-05",
+      "mean_class": 62.88,
+      "cell_samples": 74,
+      "species_code": "HIRRUS",
+      "species_name": "Barn Swallow",
+      "metric": "mean_count_class"
+    },
+    {
+      "iso_a3": "ITA",
+      "country": "Italy",
+      "month": "2024-06",
+      "mean_class": 62.63,
+      "cell_samples": 49,
+      "species_code": "HIRRUS",
+      "species_name": "Barn Swallow",
+      "metric": "mean_count_class"
+    },
+    {
+      "iso_a3": "ITA",
+      "country": "Italy",
+      "month": "2024-07",
+      "mean_class": 62.62,
+      "cell_samples": 76,
+      "species_code": "HIRRUS",
+      "species_name": "Barn Swallow",
+      "metric": "mean_count_class"
+    },
+    {
+      "iso_a3": "ITA",
+      "country": "Italy",
+      "month": "2024-08",
+      "mean_class": 63.0,
+      "cell_samples": 59,
+      "species_code": "HIRRUS",
+      "species_name": "Barn Swallow",
+      "metric": "mean_count_class"
+    },
+    {
+      "iso_a3": "ITA",
+      "country": "Italy",
+      "month": "2024-09",
+      "mean_class": 63.09,
+      "cell_samples": 57,
+      "species_code": "HIRRUS",
+      "species_name": "Barn Swallow",
+      "metric": "mean_count_class"
+    },
+    {
+      "iso_a3": "ITA",
+      "country": "Italy",
+      "month": "2024-10",
+      "mean_class": 61.75,
+      "cell_samples": 4,
+      "species_code": "HIRRUS",
+      "species_name": "Barn Swallow",
+      "metric": "mean_count_class"
+    },
+    {
+      "iso_a3": "ITA",
+      "country": "Italy",
+      "month": "2024-11",
+      "mean_class": 61.0,
+      "cell_samples": 1,
+      "species_code": "HIRRUS",
+      "species_name": "Barn Swallow",
+      "metric": "mean_count_class"
+    },
+    {
+      "iso_a3": "ITA",
+      "country": "Italy",
+      "month": "2024-12",
+      "mean_class": 62.0,
+      "cell_samples": 1,
       "species_code": "HIRRUS",
       "species_name": "Barn Swallow",
       "metric": "mean_count_class"

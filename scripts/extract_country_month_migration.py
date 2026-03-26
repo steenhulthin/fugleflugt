@@ -15,6 +15,7 @@ ROOT = Path(__file__).resolve().parent.parent
 RAW_COUNTRIES = ROOT / "data/raw/2026-03-26/natural-earth/ne_110m_admin_0_countries.geojson"
 OUT_COUNTRIES = ROOT / "data/processed/europe_countries.geojson"
 OUT_TABLE = ROOT / "data/processed/migration_country_month.json"
+YEARS = (2024, 2025, 2026)
 
 SPECIES = {
     "code": "HIRRUS",
@@ -197,7 +198,7 @@ def main() -> None:
     )
 
     bucket = defaultdict(lambda: {"sum": 0.0, "count": 0, "name": ""})
-    for year in (2025, 2026):
+    for year in YEARS:
         aggregate_year(year, countries, bucket)
 
     rows = []
@@ -221,7 +222,7 @@ def main() -> None:
                 "species_code": SPECIES["code"],
                 "species_name": SPECIES["name"],
                 "metric": "mean_count_class",
-                "years": [2025, 2026],
+                "years": list(YEARS),
                 "rows": rows,
             },
             indent=2,
