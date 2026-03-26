@@ -207,3 +207,157 @@ My practical recommendation:
 4. Only fall back to the raw `EBD` if Status and Trends regional outputs turn out not to be enough.
 
 So the answer is **yes, eBird is realistic**, but only if we accept one setup cost: a request-and-download preprocessing step outside the browser. For this project, that tradeoff looks worth it because the result should be much more robust than the current sparse EuroBirdPortal extraction.
+
+## Prompt
+
+Okay, try to build the pipeline we need to have the spatial resolution much more coarse than three times three kilometers. Maybe thirty times thirty.
+
+## Response
+
+I built the coarse eBird pipeline around the low-resolution Status and Trends product instead of the native `3 km x 3 km` grid. That gives us a practical target of about `27 km x 27 km`, which is close enough to your requested `30 km x 30 km` resolution and much more realistic for this static app.
+
+The new pipeline pieces are:
+
+- [prepare_ebird_status_download.py](/mnt/e/prj/dagens_dashboard/fugleflugt/scripts/prepare_ebird_status_download.py), which prepares the eBird download manifest and can fetch the official file listing once you have an access key.
+- [export_ebird_xyz.sh](/mnt/e/prj/dagens_dashboard/fugleflugt/scripts/export_ebird_xyz.sh), which turns a weekly multi-band GeoTIFF into `52` XYZ band files using `gdal_translate`.
+- [aggregate_ebird_weekly_xyz.py](/mnt/e/prj/dagens_dashboard/fugleflugt/scripts/aggregate_ebird_weekly_xyz.py), which aggregates those weekly XYZ rows into monthly Europe-only coarse-grid outputs and writes both GeoJSON and JSON.
+
+I also generated [ebird_download_manifest.json](/mnt/e/prj/dagens_dashboard/fugleflugt/data/processed/ebird_download_manifest.json) and updated the specs/docs in [end-product-description](/mnt/e/prj/dagens_dashboard/fugleflugt/end-product-description), [tech-stack.md](/mnt/e/prj/dagens_dashboard/fugleflugt/tech-stack.md), [data/README.md](/mnt/e/prj/dagens_dashboard/fugleflugt/data/README.md), and [data/sources.md](/mnt/e/prj/dagens_dashboard/fugleflugt/data/sources.md) so the repo now explicitly targets a coarse `27 km` to `30 km` migration layer.
+
+I verified that the Python scripts compile cleanly. I could not run the pipeline end to end yet because this workspace does not have an eBird access key, GDAL, or raster Python packages installed, so we do not yet have the actual weekly rasters to aggregate. The next concrete step would be to fetch the Barn Swallow `27 km` abundance GeoTIFF and run the export plus aggregation stages.
+
+## Prompt
+
+Store the api key somewhere where it is git ignored.
+
+## Response
+
+I set up the repo so the eBird key can live in a local `.env.local` file, which is git ignored. I also added [`.env.local.example`](/mnt/e/prj/dagens_dashboard/fugleflugt/.env.local.example) as the tracked template and updated [`.gitignore`](/mnt/e/prj/dagens_dashboard/fugleflugt/.gitignore) so example env files can stay committed while the real secret file stays private.
+
+I also updated [prepare_ebird_status_download.py](/mnt/e/prj/dagens_dashboard/fugleflugt/scripts/prepare_ebird_status_download.py) so it automatically reads `.env.local` or `.env` from the repo root and uses `EBIRD_ST_KEY` if it is present. The setup is now documented in [data/README.md](/mnt/e/prj/dagens_dashboard/fugleflugt/data/README.md).
+
+Use this in your local `.env.local`:
+
+```bash
+EBIRD_ST_KEY=your-real-ebird-key
+```
+
+I verified the updated Python script still compiles cleanly.
+
+## Prompt
+
+Ok, the key is added. Go ahead.
+
+## Response
+
+I used the key and tried the official eBird Status and Trends listing request for Barn Swallow through [prepare_ebird_status_download.py](/mnt/e/prj/dagens_dashboard/fugleflugt/scripts/prepare_ebird_status_download.py). The local setup is working and the key is being read from `.env.local`, but the upstream eBird listing endpoint is still returning `HTTP 500`.
+
+I also sanity-checked the same endpoint with another known species code (`woothr` for Wood Thrush), and it returned the same `HTTP 500`, which strongly suggests the blocker is not the Barn Swallow code or the local pipeline. It is more likely that the key is not yet accepted for Status and Trends downloads, the account does not have download access yet, or the eBird download service is failing upstream.
+
+I improved [prepare_ebird_status_download.py](/mnt/e/prj/dagens_dashboard/fugleflugt/scripts/prepare_ebird_status_download.py) so it now fails with a clear diagnostic instead of a raw traceback. The current message is:
+
+```text
+eBird listing request failed with HTTP 500 for species `barswa` and version `2023`.
+Response body: {"timestamp":"2026-03-26T15:11:56.811+00:00","status":500,"error":"Internal Server Error","path":"/v1/list-obj/2023/barswa"}
+This usually means the access key is not accepted yet, the key does not have access to Status and Trends downloads, or the eBird download service is failing upstream.
+You can verify the key at https://ebird.org/st/request and then rerun this script.
+```
+
+I verified the updated script still compiles cleanly. So the pipeline is ready locally, but the next step depends on eBird accepting the key and serving the listing successfully.
+
+## Prompt
+
+hm, try again. Maybe there is a delay. the key is correct.
+
+## Response
+
+I retried the official eBird Status and Trends listing request through [prepare_ebird_status_download.py](/mnt/e/prj/dagens_dashboard/fugleflugt/scripts/prepare_ebird_status_download.py), and the response is still the same `HTTP 500`.
+
+The current upstream response is:
+
+```text
+eBird listing request failed with HTTP 500 for species `barswa` and version `2023`.
+Response body: {"timestamp":"2026-03-26T15:16:34.192+00:00","status":500,"error":"Internal Server Error","path":"/v1/list-obj/2023/barswa"}
+This usually means the access key is not accepted yet, the key does not have access to Status and Trends downloads, or the eBird download service is failing upstream.
+You can verify the key at https://ebird.org/st/request and then rerun this script.
+```
+
+So the retry did reach the service, but the service is still not returning the listing successfully.
+
+## Prompt
+
+When I look at https://www.eurobirdportal.org/ger/de/#home/HIRRUS/r52weeks/CUCCAN/r52weeks/ I see so a quite high spatial resolution. Is that real data behind or is it just a movie showing?
+
+## Response
+
+It is not just a pre-rendered movie. The EuroBirdPortal viewer is creating a real animated map layer from underlying weekly gridded data, but that data is still aggregated rather than point-level.
+
+The strongest evidence is in the local viewer code:
+
+- [new_ebp_base.js](/mnt/e/prj/dagens_dashboard/fugleflugt/data/raw/2026-03-26/eurobirdportal/new_ebp_base.js) creates a `cartodb` `torque` layer with `52` frames, uses `week2` as the time attribute, and animates the layer over time.
+- The same file says the counts, occurrence, traces, and CRO map products are shown for each `30x30 km` square and week.
+- The map CSS uses `marker-type: rectangle`, which means those little cells are being drawn as grid squares, not as a stitched video.
+
+So the right interpretation is:
+
+- **Yes, there is real data behind it.**
+- **No, it is not raw observation-point resolution.**
+- What you are seeing is a weekly animation of values aggregated to `30 x 30 km` cells.
+
+For the `counts` view specifically, the site text says it shows the **maximum count recorded** for the selected species in each `30x30 km` square and week. For `occurrence`, it shows whether the species was recorded in that square that week. For `traces`, it includes the current week plus the prior two weeks. For `CRO`, it is a modeled/smoothed estimate rather than direct raw counts.
+
+So the map can look quite fine-grained because Europe contains a lot of `30 km` cells, but it is still a gridded weekly visualization rather than point-by-point movement tracking.
+
+## Prompt
+
+Could we use the same data and then aggregate on country level?
+
+## Response
+
+Yes, in principle.
+
+If we can get the underlying EuroBirdPortal `30 x 30 km` square values for each week, we can aggregate them to countries and build exactly the kind of country-level choropleth you want. That would be much more faithful than the current sparse shortcut in [extract_country_month_migration.py](/mnt/e/prj/dagens_dashboard/fugleflugt/scripts/extract_country_month_migration.py), which only sampled part of the Torque layer and is why we ended up with mostly `Italy` and `Greece`.
+
+The main catch is not the aggregation itself. It’s **accessing the full square-week dataset cleanly**. Once we have that, country aggregation is straightforward:
+- assign each `30 x 30 km` cell to a country
+- aggregate weekly values to country-week
+- optionally roll country-week up to country-month
+
+There are a few choices to make:
+- `centroid join`: fastest, each square belongs to the country containing its center
+- `area-weighted join`: better for border cells, but more work
+- `metric choice`: `counts`, `occurrence`, `traces`, and `CRO` should not be aggregated the same way
+
+So the short answer is: **yes, absolutely, but only if we switch from “viewer sampling” to “full grid extraction.”** That is the missing piece, not the country aggregation logic itself.
+
+If you want, I can take the next step and try to reverse-engineer the full EuroBirdPortal square dataset path instead of the sparse tile sampling approach.
+
+## Prompt
+
+give it a shot.
+
+## Response
+
+I gave the fuller EuroBirdPortal path a proper live probe instead of relying on the earlier sparse extractor. I added [probe_ebp_coverage.py](/mnt/e/prj/dagens_dashboard/fugleflugt/scripts/probe_ebp_coverage.py), which instantiates the public named map and scans the public Torque JSON tiles while joining the decoded cell positions to Europe country polygons.
+
+What the live probe showed:
+
+- The public single-species named map does exist and is real for `counts` (`q`) and `occurrence` (`p`).
+- The live metadata reports `52` weekly steps and very large `data_steps` counts, so the viewer is definitely driven by real weekly data.
+- But the public `.json.torque` extraction path still behaves very sparsely for Barn Swallow:
+  - at `z4`, the probe found `0` non-empty tiles for both `counts` and `occurrence`
+  - at `z3`, it found only `1` non-empty tile for each
+  - the decoded rows still only joined to `Italy` and `Greece`
+
+So the result is mixed:
+
+- **Yes**, the viewer is backed by real data.
+- **No**, the public Torque JSON path we are currently using does **not** look like a clean full-Europe square dataset we can trust for country aggregation.
+
+That means the current public extraction method is still not enough to build a robust country-level choropleth from EuroBirdPortal alone. The most likely explanations are:
+
+1. the public Torque JSON endpoint is optimized for rendering and not for complete data export
+2. the full square dataset sits behind a different CARTO/SQL path than the one we are hitting
+3. the square coordinates are being exposed in a way that is not equivalent to a direct full-grid download
+
+So I did give it a real shot, and the honest conclusion is: **the public viewer data path still does not give us a reliable full-Europe country aggregation route yet**.

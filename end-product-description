@@ -14,6 +14,8 @@ The product should include an interactive map.
 
 The map should show bird migration patterns over time.
 
+For the first useful migration map, a coarser spatial grid is acceptable if it makes the data more readable and easier to process.
+
 The map should also show avian influenza outbreak data.
 
 The user should be able to move through time with a time slider.
@@ -21,6 +23,10 @@ The user should be able to move through time with a time slider.
 ## Time Resolution
 
 For the first version, the smallest time unit should be one month.
+
+## Migration Resolution
+
+For the first practical eBird-based version, the migration layer may use a coarse grid of about `27 km` to `30 km` cells instead of the native `3 km` cells.
 
 ## Outbreak Data
 

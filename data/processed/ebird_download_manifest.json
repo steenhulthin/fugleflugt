@@ -1,0 +1,21 @@
+{
+  "species_code": "barswa",
+  "species_name": "Barn Swallow",
+  "version_year": "2023",
+  "target_product": "weekly_abundance_27km",
+  "target_resolution_km": 27,
+  "notes": [
+    "This pipeline targets the eBird Status and Trends low-resolution raster tier.",
+    "The practical target is about 27 km cells, which is close to the requested 30 km grid.",
+    "Run the download step with an eBird Status and Trends access key.",
+    "No access key was provided, so the manifest contains the target URL pattern only."
+  ],
+  "download_listing_url": "https://st-download.ebird.org/v1/list-obj/2023/barswa?key=YOUR_ACCESS_KEY",
+  "listing_path": "/mnt/e/prj/dagens_dashboard/fugleflugt/data/raw/2026-03-26/ebird/barswa/file_listing.json",
+  "candidates": [],
+  "next_steps": [
+    "Download the best weekly abundance 27km GeoTIFF for the chosen species.",
+    "Export its 52 weekly bands to XYZ files with scripts/export_ebird_xyz.sh.",
+    "Aggregate the weekly XYZ rows to monthly coarse-grid GeoJSON with scripts/aggregate_ebird_weekly_xyz.py."
+  ]
+}

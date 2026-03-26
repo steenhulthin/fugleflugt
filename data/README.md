@@ -26,3 +26,24 @@ These downloads are suitable as raw source material and attribution references.
 EuroBirdPortal is publicly viewable and appears to use public CARTO-backed map layers, but the raw migration download path still needs verification before we rely on it as a structured source.
 
 For now, we keep local copies of the public page and the JavaScript files that describe how the map is assembled.
+
+We are also preparing an alternative eBird pipeline for coarser spatial output.
+
+The intended eBird path is:
+
+1. Request access to eBird Status and Trends data products.
+2. Use the low-resolution weekly abundance raster tier at about `27 km`, which is close to the target `30 km` grid.
+3. Export the `52` weekly raster bands to XYZ rows.
+4. Aggregate those weekly rows into monthly Europe-only coarse-grid GeoJSON and JSON files.
+
+The pipeline scripts are:
+
+- `scripts/prepare_ebird_status_download.py`
+- `scripts/export_ebird_xyz.sh`
+- `scripts/aggregate_ebird_weekly_xyz.py`
+
+Store the eBird access key in a local `.env.local` file using `EBIRD_ST_KEY=...`.
+
+Use `.env.local.example` as the template. The real `.env.local` file is git ignored.
+
+Because this workspace does not currently have GDAL or raster Python packages installed, the pipeline is scaffolded but not fully runnable end to end yet.
