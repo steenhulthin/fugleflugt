@@ -1,8 +1,28 @@
-# Bird migration and Avian Flu
+# Bird Migration and Avian Flu
 
-The end product is a dashboard with a map where the end user can see bird migration and avian/bird-flu outbreaks. See this from a European point of view.
+## Goal
 
-The goal is to see if there's any relationship between bird migration and bird flu.
+Build a dashboard that helps the user explore whether there may be a relationship between bird migration and avian influenza outbreaks.
 
-The dashboard should have a map.The map should show bird migration over time.Using a time slider.Outbreak should also be shown on the map.To start with, have the temporal smallest unit be a month.For the outbreak only look at poultry cases.
+## Scope
+
+The dashboard should focus on Europe.
+
+## Main Features
+
+The product should include an interactive map.
+
+The map should show bird migration patterns over time.
+
+The map should also show avian influenza outbreak data.
+
+The user should be able to move through time with a time slider.
+
+## Time Resolution
+
+For the first version, the smallest time unit should be one month.
+
+## Outbreak Data
+
+For the first version, outbreak data should only include poultry cases.
 

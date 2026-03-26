@@ -1,7 +1,7 @@
-1. Log all prompts and answer to a prompts.md exactly as they are written/generated. 
+1. Log all prompts and responses in `prompts.md` exactly as written.
 
-2. never reference anything in the environment outside the project/git folder. 
+2. Do not reference anything outside the project or git folder.
 
-3. add changed specifications to the scaffolding/specification files. 
+3. When specifications change, update the relevant scaffolding and specification files.
 
-4. use data that is open and freely available. Always keep references to the used data and show it in the UI.
+4. Use open and freely available data only. Keep references to all data sources and show those references in the UI.
