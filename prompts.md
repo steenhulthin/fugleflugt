@@ -21,3 +21,13 @@ Go ahead and make it a front end.
 Built a static frontend in [index.html](/mnt/e/prj/dagens_dashboard/fugleflugt/index.html), [app.js](/mnt/e/prj/dagens_dashboard/fugleflugt/assets/app.js), and [styles.css](/mnt/e/prj/dagens_dashboard/fugleflugt/assets/styles.css). It uses MapLibre with a Europe-focused dashboard shell, monthly slider and playback, local migration and outbreak data from [timeline.json](/mnt/e/prj/dagens_dashboard/fugleflugt/data/processed/timeline.json), [migration_monthly.geojson](/mnt/e/prj/dagens_dashboard/fugleflugt/data/processed/migration_monthly.geojson), and [poultry_outbreaks.geojson](/mnt/e/prj/dagens_dashboard/fugleflugt/data/processed/poultry_outbreaks.geojson). The source list is visible in the UI, and the current migration layer is clearly marked as prototype data until we finish the EuroBirdPortal extraction.
 
 I validated the JSON files successfully. I could not fully smoke-test the page in a browser here because `node` is not installed and starting a local HTTP server is blocked by the sandbox, so browser verification is still pending. If you want, I can next replace the prototype migration points with a real extracted monthly dataset and normalize the outbreak layer from the raw official sources.
+
+## Prompt
+
+Find appropriate map background data.Should be in GeoTIF, cloud optimized. Or vector FlatGeobuf. Download it and add it to the map. prefer small datasets.
+
+## Response
+
+Found and downloaded a small FlatGeobuf background dataset at [countries.fgb](/mnt/e/prj/dagens_dashboard/fugleflugt/data/background/countries.fgb). It is about 205 KB and now loads through the local browser bundle [flatgeobuf-geojson.min.js](/mnt/e/prj/dagens_dashboard/fugleflugt/assets/vendor/flatgeobuf-geojson.min.js). I added it to the map in [app.js](/mnt/e/prj/dagens_dashboard/fugleflugt/assets/app.js) and [index.html](/mnt/e/prj/dagens_dashboard/fugleflugt/index.html) as subtle country fill and outline layers under the migration and outbreak overlays, and I updated attribution in [sources.md](/mnt/e/prj/dagens_dashboard/fugleflugt/data/sources.md).
+
+I verified the FlatGeobuf magic header successfully and confirmed that the browser bundle is present locally. I still could not run a full browser smoke test in this sandbox, so the remaining check is visual confirmation in your browser. If you want, I can next replace this world countries layer with an even tighter Europe-only background to cut the dataset down further.

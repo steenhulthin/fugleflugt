@@ -5,6 +5,12 @@
 - MapLibre GL JS
   - https://maplibre.org/maplibre-gl-js/docs/
 
+## Map Background
+
+- FlatGeobuf countries background
+  - https://raw.githubusercontent.com/flatgeobuf/flatgeobuf/master/test/data/countries.fgb
+  - Small FlatGeobuf dataset used as the local background boundary layer
+
 ## Bird Migration
 
 - EuroBirdPortal

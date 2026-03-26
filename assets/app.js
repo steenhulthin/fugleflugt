@@ -40,6 +40,7 @@ const emptyCollection = {
 };
 
 const state = {
+  background: emptyCollection,
   timeline: [],
   migration: emptyCollection,
   outbreaks: emptyCollection,
@@ -93,6 +94,21 @@ function setSourceData(sourceId, data) {
   if (source) {
     source.setData(data);
   }
+}
+
+async function loadBackground() {
+  const response = await fetch("./data/background/countries.fgb");
+
+  if (!response.ok || !response.body) {
+    throw new Error("Failed to load FlatGeobuf background data");
+  }
+
+  const features = [];
+  for await (const feature of flatgeobuf.deserialize(response.body)) {
+    features.push(feature);
+  }
+
+  state.background = featureCollection(features);
 }
 
 function updateSummary(migrationData, outbreakData) {
@@ -157,6 +173,11 @@ function bindPopup(layerId, renderContent) {
 }
 
 function addMapLayers() {
+  map.addSource("countries", {
+    type: "geojson",
+    data: state.background,
+  });
+
   map.addSource("migration", {
     type: "geojson",
     data: emptyCollection,
@@ -165,6 +186,26 @@ function addMapLayers() {
   map.addSource("outbreaks", {
     type: "geojson",
     data: emptyCollection,
+  });
+
+  map.addLayer({
+    id: "countries-fill",
+    type: "fill",
+    source: "countries",
+    paint: {
+      "fill-color": "#dde9df",
+      "fill-opacity": 0.86,
+    },
+  });
+
+  map.addLayer({
+    id: "countries-outline",
+    type: "line",
+    source: "countries",
+    paint: {
+      "line-color": "rgba(22, 48, 44, 0.22)",
+      "line-width": 1,
+    },
   });
 
   map.addLayer({
@@ -290,7 +331,7 @@ async function loadData() {
 
 async function init() {
   wireControls();
-  await loadData();
+  await Promise.all([loadBackground(), loadData()]);
 
   const mountMap = () => {
     addMapLayers();
