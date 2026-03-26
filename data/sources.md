@@ -19,19 +19,6 @@
   - Public page and supporting JavaScript downloaded locally for source inspection
   - The current choropleth extraction uses EuroBirdPortal CARTO torque tiles for `Barn Swallow` (`HIRRUS`) count classes in `2025` and `2026`
 
-- eBird Status and Trends
-  - https://science.ebird.org/status-and-trends
-  - Official species distribution and abundance product
-  - The coarse-grid migration pipeline is designed around the low-resolution `27 km` weekly abundance rasters
-
-- eBird Status and Trends Data Products API
-  - https://ebird.github.io/ebirdst/articles/api.html
-  - Official API documentation for listing and downloading species data product files
-
-- eBird Status Data Products
-  - https://ebird.github.io/ebirdst/articles/status.html
-  - Documents that the low-resolution GeoTIFF tier uses an Equal Earth projection and `27 km` cells
-
 - Natural Earth countries
   - https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_110m_admin_0_countries.geojson
   - Used for the country-level aggregation join that turns migration grid cells into a choropleth table

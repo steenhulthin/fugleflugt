@@ -361,3 +361,53 @@ That means the current public extraction method is still not enough to build a r
 3. the square coordinates are being exposed in a way that is not equivalent to a direct full-grid download
 
 So I did give it a real shot, and the honest conclusion is: **the public viewer data path still does not give us a reliable full-Europe country aggregation route yet**.
+
+## Prompt
+
+Translate the user interface to Danish
+
+## Response
+
+I translated the visible frontend interface to Danish in [index.html](/mnt/e/prj/dagens_dashboard/fugleflugt/index.html) and [app.js](/mnt/e/prj/dagens_dashboard/fugleflugt/assets/app.js).
+
+That includes:
+
+- the sidebar headings and explanatory text
+- the layer labels and map legend
+- the timeline/playback labels
+- the dynamic month view title and subtitle
+- the popup labels for migration and outbreak features
+- the load/error and no-data messages
+
+I also switched the month formatter to Danish locale formatting so the timeline and popup month labels follow Danish month names.
+
+## Prompt
+
+For now just keep things as-is, but do a cleanup of all the unsued kode and data.
+
+## Response
+
+I cleaned out the unused code and data while leaving the current EuroBirdPortal-based app behavior unchanged.
+
+Removed unused artifacts:
+
+- the old prototype migration file [migration_monthly.geojson](/mnt/e/prj/dagens_dashboard/fugleflugt/data/processed/migration_monthly.geojson)
+- the unused eBird scaffold artifact [ebird_download_manifest.json](/mnt/e/prj/dagens_dashboard/fugleflugt/data/processed/ebird_download_manifest.json)
+- the unused eBird/probing scripts:
+  - [aggregate_ebird_weekly_xyz.py](/mnt/e/prj/dagens_dashboard/fugleflugt/scripts/aggregate_ebird_weekly_xyz.py)
+  - [export_ebird_xyz.sh](/mnt/e/prj/dagens_dashboard/fugleflugt/scripts/export_ebird_xyz.sh)
+  - [prepare_ebird_status_download.py](/mnt/e/prj/dagens_dashboard/fugleflugt/scripts/prepare_ebird_status_download.py)
+  - [probe_ebp_coverage.py](/mnt/e/prj/dagens_dashboard/fugleflugt/scripts/probe_ebp_coverage.py)
+- the unused env template [`.env.local.example`](/mnt/e/prj/dagens_dashboard/fugleflugt/.env.local.example)
+- Python cache files under `scripts/__pycache__/`
+
+I also cleaned the related documentation in [data/README.md](/mnt/e/prj/dagens_dashboard/fugleflugt/data/README.md), [data/sources.md](/mnt/e/prj/dagens_dashboard/fugleflugt/data/sources.md), [tech-stack.md](/mnt/e/prj/dagens_dashboard/fugleflugt/tech-stack.md), and [`.gitignore`](/mnt/e/prj/dagens_dashboard/fugleflugt/.gitignore) so the repo no longer points at those removed files.
+
+I left the current frontend and active processed data in place:
+
+- [index.html](/mnt/e/prj/dagens_dashboard/fugleflugt/index.html)
+- [app.js](/mnt/e/prj/dagens_dashboard/fugleflugt/assets/app.js)
+- [europe_countries.geojson](/mnt/e/prj/dagens_dashboard/fugleflugt/data/processed/europe_countries.geojson)
+- [migration_country_month.json](/mnt/e/prj/dagens_dashboard/fugleflugt/data/processed/migration_country_month.json)
+- [poultry_outbreaks.geojson](/mnt/e/prj/dagens_dashboard/fugleflugt/data/processed/poultry_outbreaks.geojson)
+- [timeline.json](/mnt/e/prj/dagens_dashboard/fugleflugt/data/processed/timeline.json)

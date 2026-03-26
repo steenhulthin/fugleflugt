@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="da">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -14,25 +14,25 @@
     <div class="shell">
       <aside class="panel">
         <div class="hero">
-          <p class="eyebrow">Bird Migration and Avian Flu</p>
+          <p class="eyebrow">Fugletræk og fugleinfluenza</p>
           <h1>Fugleflugt</h1>
           <p class="intro">
-            A Europe-focused prototype for exploring how monthly migration
-            movement and poultry outbreaks line up over time.
+            En Europa-fokuseret prototype til at udforske, hvordan månedligt
+            fugletræk og udbrud hos fjerkræ fordeler sig over tid.
           </p>
           <div class="status-row">
             <span class="status-pill">Static HTML</span>
             <span class="status-pill">MapLibre GL JS</span>
-            <span class="status-pill status-pill-warn">Prototype Data</span>
+            <span class="status-pill status-pill-warn">Prototypedata</span>
           </div>
         </div>
 
         <section class="card controls-card">
           <div class="card-heading">
-            <h2>Timeline</h2>
-            <button id="play-toggle" class="button" type="button">Play</button>
+            <h2>Tidslinje</h2>
+            <button id="play-toggle" class="button" type="button">Afspil</button>
           </div>
-          <p id="month-label" class="month-label">Loading timeline...</p>
+          <p id="month-label" class="month-label">Indlæser tidslinje...</p>
           <input
             id="month-slider"
             class="slider"
@@ -44,82 +44,82 @@
           />
           <div class="slider-meta">
             <span id="month-start">Start</span>
-            <span id="month-end">End</span>
+            <span id="month-end">Slut</span>
           </div>
         </section>
 
         <section class="card">
           <div class="card-heading">
-            <h2>Layers</h2>
+            <h2>Lag</h2>
           </div>
           <label class="toggle">
             <input id="toggle-migration" type="checkbox" checked />
-            <span>Migration choropleth</span>
+            <span>Koropletkort for fugletræk</span>
           </label>
           <label class="toggle">
             <input id="toggle-outbreaks" type="checkbox" checked />
-            <span>Poultry outbreaks</span>
+            <span>Udbrud hos fjerkræ</span>
           </label>
           <p class="note">
-            The migration layer is now joined to country polygons from a real
-            EuroBirdPortal extraction for Barn Swallow monthly count classes.
-            Coverage is still limited, so this should be treated as a first
-            extraction pass rather than a finished product dataset.
+            Fugletrækslaget er nu koblet til landepolygoner fra et rigtigt
+            EuroBirdPortal-udtræk for Landsvale med månedlige tælleklasser.
+            Dækningen er stadig begrænset, så dette bør betragtes som et første
+            udtræk og ikke et færdigt produktionsdatasæt.
           </p>
         </section>
 
         <section class="card stats-grid">
           <div>
-            <p class="stat-label">Colored countries</p>
+            <p class="stat-label">Farvede lande</p>
             <p id="migration-count" class="stat-value">0</p>
           </div>
           <div>
-            <p class="stat-label">Visible outbreaks</p>
+            <p class="stat-label">Synlige udbrud</p>
             <p id="outbreak-count" class="stat-value">0</p>
           </div>
         </section>
 
         <section class="card">
           <div class="card-heading">
-            <h2>What You Are Seeing</h2>
+            <h2>Det du ser</h2>
           </div>
           <p class="note">
-            Bird migration currently shows <strong>Barn Swallow</strong>
-            (`HIRRUS`) only.
+            Fugletrækket viser i øjeblikket kun <strong>Landsvale</strong>
+            (`HIRRUS`).
           </p>
           <p class="note">
-            Country color shows the monthly EuroBirdPortal
-            <strong>mean count class</strong> for Barn Swallow.
+            Landefarven viser den månedlige EuroBirdPortal
+            <strong>gennemsnitlige tælleklasse</strong> for Landsvale.
           </p>
           <p class="note">
-            Poultry outbreak circles are scaled by estimated outbreak size, so
-            a larger circle means a larger outbreak.
+            Cirklerne for udbrud hos fjerkræ er skaleret efter anslået størrelse,
+            så en større cirkel betyder et større udbrud.
           </p>
         </section>
 
         <section class="card sources-card">
           <div class="card-heading">
-            <h2>Sources</h2>
+            <h2>Kilder</h2>
           </div>
           <p class="note">
-            The dashboard keeps source references visible in the UI, in line
-            with the project spec.
+            Dashboardet holder kildereferencer synlige i brugerfladen i tråd
+            med projektspecifikationen.
           </p>
           <ul class="source-list">
             <li>
               <a href="https://maplibre.org/maplibre-gl-js/docs/" target="_blank" rel="noreferrer">MapLibre GL JS</a>
             </li>
             <li>
-              <a href="https://raw.githubusercontent.com/flatgeobuf/flatgeobuf/master/test/data/countries.fgb" target="_blank" rel="noreferrer">FlatGeobuf countries background</a>
+              <a href="https://raw.githubusercontent.com/flatgeobuf/flatgeobuf/master/test/data/countries.fgb" target="_blank" rel="noreferrer">FlatGeobuf baggrund for lande</a>
             </li>
             <li>
               <a href="https://www.eurobirdportal.org/ger/de/" target="_blank" rel="noreferrer">EuroBirdPortal</a>
             </li>
             <li>
-              <a href="https://www.fao.org/animal-health/situation-updates/global-aiv-with-zoonotic-potential/en" target="_blank" rel="noreferrer">FAO Global Avian Influenza update</a>
+              <a href="https://www.fao.org/animal-health/situation-updates/global-aiv-with-zoonotic-potential/en" target="_blank" rel="noreferrer">FAO global opdatering om fugleinfluenza</a>
             </li>
             <li>
-              <a href="https://www.ecdc.europa.eu/en/publications-data/avian-influenza-overview-june-september-2025" target="_blank" rel="noreferrer">ECDC avian influenza overview</a>
+              <a href="https://www.ecdc.europa.eu/en/publications-data/avian-influenza-overview-june-september-2025" target="_blank" rel="noreferrer">ECDC overblik over fugleinfluenza</a>
             </li>
           </ul>
         </section>
@@ -129,56 +129,55 @@
         <div class="map-header">
           <div>
             <p class="eyebrow">Europe</p>
-            <h2 id="map-title">Monthly view</h2>
+            <h2 id="map-title">Månedsvisning</h2>
             <p id="map-subtitle" class="map-subtitle">
-              Barn Swallow migration intensity by country, with scaled poultry
-              outbreaks.
+              Landsvalens trækindeks pr. land med skalerede udbrud hos fjerkræ.
             </p>
           </div>
           <p class="map-caption">
-            Migration and outbreak layers update together as you move through
-            the timeline.
+            Lagene for fugletræk og udbrud opdateres sammen, når du bevæger dig
+            gennem tidslinjen.
           </p>
         </div>
         <div class="map-frame">
           <div id="map"></div>
           <div class="map-legend" aria-live="polite">
-            <p class="map-legend-title">Map Legend</p>
+            <p class="map-legend-title">Kortforklaring</p>
             <p class="map-legend-copy">
-              Migration layer: Barn Swallow (`HIRRUS`) monthly mean count class.
+              Fugletrækslag: Landsvale (`HIRRUS`) med månedlig gennemsnitlig tælleklasse.
             </p>
             <p id="map-legend-note" class="map-legend-note">
-              Current extraction coverage is limited, so month-to-month color
-              changes can be subtle.
+              Den nuværende dækning er begrænset, så farveændringer fra måned
+              til måned kan være diskrete.
             </p>
             <div class="map-legend-section">
-              <p class="map-legend-label">Country color</p>
+              <p class="map-legend-label">Landefarve</p>
               <div class="legend-ramp">
                 <span class="legend-ramp-stop legend-ramp-low"></span>
                 <span class="legend-ramp-stop legend-ramp-mid"></span>
                 <span class="legend-ramp-stop legend-ramp-high"></span>
               </div>
               <div class="legend-ramp-values">
-                <span id="migration-low">Low</span>
-                <span id="migration-mid">Mid</span>
-                <span id="migration-high">High</span>
+                <span id="migration-low">Lav</span>
+                <span id="migration-mid">Midt</span>
+                <span id="migration-high">Høj</span>
               </div>
               <div class="legend-ramp-values">
-                <span id="migration-active-countries">0 countries</span>
-                <span id="migration-range-width">range 0.0</span>
+                <span id="migration-active-countries">0 lande</span>
+                <span id="migration-range-width">spænd 0,0</span>
               </div>
             </div>
             <div class="map-legend-section">
-              <p class="map-legend-label">Poultry outbreak size</p>
+              <p class="map-legend-label">Størrelse på udbrud hos fjerkræ</p>
               <div class="outbreak-scale">
                 <span class="outbreak-scale-dot outbreak-scale-small"></span>
                 <span class="outbreak-scale-dot outbreak-scale-medium"></span>
                 <span class="outbreak-scale-dot outbreak-scale-large"></span>
               </div>
               <div class="legend-ramp-values">
-                <span>Small</span>
-                <span>Medium</span>
-                <span>Large</span>
+                <span>Lille</span>
+                <span>Mellem</span>
+                <span>Stor</span>
               </div>
             </div>
           </div>

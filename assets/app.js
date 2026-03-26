@@ -57,7 +57,7 @@ const state = {
   timer: null,
 };
 
-const monthFormatter = new Intl.DateTimeFormat("en", {
+const monthFormatter = new Intl.DateTimeFormat("da-DK", {
   month: "long",
   year: "numeric",
   timeZone: "UTC",
@@ -127,7 +127,7 @@ async function loadBackground() {
   const response = await fetch("./data/background/countries.fgb");
 
   if (!response.ok || !response.body) {
-    throw new Error("Failed to load FlatGeobuf background data");
+    throw new Error("Kunne ikke indlaese FlatGeobuf-baggrundsdata");
   }
 
   const features = [];
@@ -152,13 +152,13 @@ function updateLegendValues(migrationData) {
     .filter((value) => value !== null);
 
   if (!values.length) {
-    elements.migrationLow.textContent = "No data";
-    elements.migrationMid.textContent = "No data";
-    elements.migrationHigh.textContent = "No data";
-    elements.migrationActiveCountries.textContent = "0 countries";
-    elements.migrationRangeWidth.textContent = "range 0.0";
+    elements.migrationLow.textContent = "Ingen data";
+    elements.migrationMid.textContent = "Ingen data";
+    elements.migrationHigh.textContent = "Ingen data";
+    elements.migrationActiveCountries.textContent = "0 lande";
+    elements.migrationRangeWidth.textContent = "spaend 0,0";
     elements.mapLegendNote.textContent =
-      "No Barn Swallow migration values are available for this month in the current extraction.";
+      "Der er ingen traekvaerdier for landsvale tilgaengelige for denne maaned i det nuvaerende udtraek.";
     return { low: 60, mid: 63, high: 66 };
   }
 
@@ -171,15 +171,15 @@ function updateLegendValues(migrationData) {
   elements.migrationLow.textContent = low.toFixed(1);
   elements.migrationMid.textContent = mid.toFixed(1);
   elements.migrationHigh.textContent = rawHigh.toFixed(1);
-  elements.migrationActiveCountries.textContent = `${values.length} countries`;
-  elements.migrationRangeWidth.textContent = `range ${rangeWidth.toFixed(1)}`;
+  elements.migrationActiveCountries.textContent = `${values.length} lande`;
+  elements.migrationRangeWidth.textContent = `spaend ${rangeWidth.toFixed(1).replace(".", ",")}`;
 
   if (values.length <= 2 || rangeWidth < 1.5) {
     elements.mapLegendNote.textContent =
-      "Color shifts are modest here because the current Barn Swallow extraction covers very few countries and the values stay close together.";
+      "Farveskiftene er beskedne her, fordi det nuvaerende landsvale-udtraek daekker meget faa lande, og vaerdierne ligger taet.";
   } else {
     elements.mapLegendNote.textContent =
-      "Country color is recalculated each month from the visible Barn Swallow values, so darker countries are stronger relative to that month.";
+      "Landefarven genberegnes hver maaned ud fra de synlige landsvalevaerdier, saa moerkere lande staar staerkere relativt til den maaned.";
   }
 
   return { low, mid, high };
@@ -250,7 +250,7 @@ function updateMonth() {
           ...feature.properties,
           mean_class: match?.mean_class ?? null,
           cell_samples: match?.cell_samples ?? 0,
-          species_name: match?.species_name ?? "Barn Swallow",
+          species_name: match?.species_name ?? "Landsvale",
           month,
         },
       };
@@ -260,9 +260,9 @@ function updateMonth() {
   const extent = updateLegendValues(migrationData);
 
   elements.monthLabel.textContent = label;
-  elements.mapTitle.textContent = `${label} overview`;
+  elements.mapTitle.textContent = `${label} overblik`;
   elements.mapSubtitle.textContent =
-    `Barn Swallow migration intensity by country for ${label}, with poultry outbreak circles scaled by estimated outbreak size.`;
+    `Landsvalens traekintensitet pr. land for ${label} med cirkler for udbrud hos fjerkrae skaleret efter anslaaet stoerrelse.`;
   elements.monthSlider.value = String(state.currentIndex);
 
   setSourceData("migration", migrationData);
@@ -274,7 +274,7 @@ function updateMonth() {
 
 function stopPlayback() {
   state.playing = false;
-  elements.playToggle.textContent = "Play";
+  elements.playToggle.textContent = "Afspil";
   if (state.timer) {
     window.clearInterval(state.timer);
     state.timer = null;
@@ -408,11 +408,11 @@ function addMapLayers() {
     (props) => `
       <div class="popup">
         <h3>${props.name}</h3>
-        <p><strong>Month:</strong> ${labelFromMonth(props.month)}</p>
-        <p><strong>Species:</strong> ${props.species_name}</p>
-        <p><strong>Metric:</strong> Mean Barn Swallow count class</p>
-        <p><strong>Mean count class:</strong> ${props.mean_class ?? "No data"}</p>
-        <p><strong>Cell samples:</strong> ${props.cell_samples}</p>
+        <p><strong>Maaned:</strong> ${labelFromMonth(props.month)}</p>
+        <p><strong>Art:</strong> ${props.species_name}</p>
+        <p><strong>Maal:</strong> Gennemsnitlig taelleklasse for landsvale</p>
+        <p><strong>Gennemsnitlig taelleklasse:</strong> ${props.mean_class ?? "Ingen data"}</p>
+        <p><strong>Celleproever:</strong> ${props.cell_samples}</p>
       </div>
     `,
   );
@@ -422,10 +422,10 @@ function addMapLayers() {
     (props) => `
       <div class="popup">
         <h3>${props.country}</h3>
-        <p><strong>Month:</strong> ${labelFromMonth(props.month)}</p>
-        <p><strong>Subtype:</strong> ${props.subtype}</p>
-        <p><strong>Category:</strong> ${props.category}</p>
-        <p><strong>Estimated birds affected:</strong> ${props.birds_affected.toLocaleString()}</p>
+        <p><strong>Maaned:</strong> ${labelFromMonth(props.month)}</p>
+        <p><strong>Undertype:</strong> ${props.subtype}</p>
+        <p><strong>Kategori:</strong> ${props.category}</p>
+        <p><strong>Anslaget antal beroerte fugle:</strong> ${props.birds_affected.toLocaleString("da-DK")}</p>
       </div>
     `,
   );
@@ -507,6 +507,6 @@ async function init() {
 
 init().catch((error) => {
   console.error(error);
-  elements.monthLabel.textContent = "Failed to load local data";
-  elements.mapTitle.textContent = "Frontend setup needs attention";
+  elements.monthLabel.textContent = "Kunne ikke indlaese lokale data";
+  elements.mapTitle.textContent = "Frontendopsaetningen kraever opmaerksomhed";
 });
