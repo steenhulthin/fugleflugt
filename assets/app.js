@@ -36,6 +36,9 @@ const elements = {
   migrationLow: document.querySelector("#migration-low"),
   migrationMid: document.querySelector("#migration-mid"),
   migrationHigh: document.querySelector("#migration-high"),
+  migrationActiveCountries: document.querySelector("#migration-active-countries"),
+  migrationRangeWidth: document.querySelector("#migration-range-width"),
+  mapLegendNote: document.querySelector("#map-legend-note"),
 };
 
 const emptyCollection = {
@@ -152,6 +155,10 @@ function updateLegendValues(migrationData) {
     elements.migrationLow.textContent = "No data";
     elements.migrationMid.textContent = "No data";
     elements.migrationHigh.textContent = "No data";
+    elements.migrationActiveCountries.textContent = "0 countries";
+    elements.migrationRangeWidth.textContent = "range 0.0";
+    elements.mapLegendNote.textContent =
+      "No Barn Swallow migration values are available for this month in the current extraction.";
     return { low: 60, mid: 63, high: 66 };
   }
 
@@ -159,10 +166,21 @@ function updateLegendValues(migrationData) {
   const rawHigh = Math.max(...values);
   const high = rawHigh === low ? low + 1 : rawHigh;
   const mid = (low + high) / 2;
+  const rangeWidth = rawHigh - low;
 
   elements.migrationLow.textContent = low.toFixed(1);
   elements.migrationMid.textContent = mid.toFixed(1);
-  elements.migrationHigh.textContent = high.toFixed(1);
+  elements.migrationHigh.textContent = rawHigh.toFixed(1);
+  elements.migrationActiveCountries.textContent = `${values.length} countries`;
+  elements.migrationRangeWidth.textContent = `range ${rangeWidth.toFixed(1)}`;
+
+  if (values.length <= 2 || rangeWidth < 1.5) {
+    elements.mapLegendNote.textContent =
+      "Color shifts are modest here because the current Barn Swallow extraction covers very few countries and the values stay close together.";
+  } else {
+    elements.mapLegendNote.textContent =
+      "Country color is recalculated each month from the visible Barn Swallow values, so darker countries are stronger relative to that month.";
+  }
 
   return { low, mid, high };
 }
@@ -173,15 +191,46 @@ function updateMigrationStyle(extent) {
   }
 
   map.setPaintProperty("migration-choropleth", "fill-color", [
-    "interpolate",
-    ["linear"],
-    ["coalesce", ["get", "mean_class"], extent.low],
-    extent.low,
-    "#f7e8b3",
-    extent.mid,
-    "#d59a3a",
-    extent.high,
-    "#8d4e0f",
+    "case",
+    ["!", ["has", "mean_class"]],
+    "rgba(0,0,0,0)",
+    [
+      "interpolate",
+      ["linear"],
+      ["coalesce", ["get", "mean_class"], extent.low],
+      extent.low,
+      "#fff4cf",
+      extent.mid,
+      "#f2a531",
+      extent.high,
+      "#843512",
+    ],
+  ]);
+}
+
+function updateMigrationOpacity(migrationData) {
+  if (!map.getLayer("migration-choropleth")) {
+    return;
+  }
+
+  const maxSamples = Math.max(
+    1,
+    ...migrationData.features.map((feature) => feature.properties.cell_samples || 0),
+  );
+
+  map.setPaintProperty("migration-choropleth", "fill-opacity", [
+    "case",
+    ["!", ["has", "mean_class"]],
+    0,
+    [
+      "interpolate",
+      ["linear"],
+      ["coalesce", ["get", "cell_samples"], 0],
+      0,
+      0.34,
+      maxSamples,
+      0.9,
+    ],
   ]);
 }
 
@@ -219,6 +268,7 @@ function updateMonth() {
   setSourceData("migration", migrationData);
   setSourceData("outbreaks", outbreakData);
   updateMigrationStyle(extent);
+  updateMigrationOpacity(migrationData);
   updateSummary(migrationData, outbreakData);
 }
 

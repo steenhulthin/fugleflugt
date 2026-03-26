@@ -140,36 +140,46 @@
             the timeline.
           </p>
         </div>
-        <div id="map"></div>
-        <div class="map-legend" aria-live="polite">
-          <p class="map-legend-title">Map Legend</p>
-          <p class="map-legend-copy">
-            Migration layer: Barn Swallow (`HIRRUS`) monthly mean count class.
-          </p>
-          <div class="map-legend-section">
-            <p class="map-legend-label">Country color</p>
-            <div class="legend-ramp">
-              <span class="legend-ramp-stop legend-ramp-low"></span>
-              <span class="legend-ramp-stop legend-ramp-mid"></span>
-              <span class="legend-ramp-stop legend-ramp-high"></span>
+        <div class="map-frame">
+          <div id="map"></div>
+          <div class="map-legend" aria-live="polite">
+            <p class="map-legend-title">Map Legend</p>
+            <p class="map-legend-copy">
+              Migration layer: Barn Swallow (`HIRRUS`) monthly mean count class.
+            </p>
+            <p id="map-legend-note" class="map-legend-note">
+              Current extraction coverage is limited, so month-to-month color
+              changes can be subtle.
+            </p>
+            <div class="map-legend-section">
+              <p class="map-legend-label">Country color</p>
+              <div class="legend-ramp">
+                <span class="legend-ramp-stop legend-ramp-low"></span>
+                <span class="legend-ramp-stop legend-ramp-mid"></span>
+                <span class="legend-ramp-stop legend-ramp-high"></span>
+              </div>
+              <div class="legend-ramp-values">
+                <span id="migration-low">Low</span>
+                <span id="migration-mid">Mid</span>
+                <span id="migration-high">High</span>
+              </div>
+              <div class="legend-ramp-values">
+                <span id="migration-active-countries">0 countries</span>
+                <span id="migration-range-width">range 0.0</span>
+              </div>
             </div>
-            <div class="legend-ramp-values">
-              <span id="migration-low">Low</span>
-              <span id="migration-mid">Mid</span>
-              <span id="migration-high">High</span>
-            </div>
-          </div>
-          <div class="map-legend-section">
-            <p class="map-legend-label">Poultry outbreak size</p>
-            <div class="outbreak-scale">
-              <span class="outbreak-scale-dot outbreak-scale-small"></span>
-              <span class="outbreak-scale-dot outbreak-scale-medium"></span>
-              <span class="outbreak-scale-dot outbreak-scale-large"></span>
-            </div>
-            <div class="legend-ramp-values">
-              <span>Small</span>
-              <span>Medium</span>
-              <span>Large</span>
+            <div class="map-legend-section">
+              <p class="map-legend-label">Poultry outbreak size</p>
+              <div class="outbreak-scale">
+                <span class="outbreak-scale-dot outbreak-scale-small"></span>
+                <span class="outbreak-scale-dot outbreak-scale-medium"></span>
+                <span class="outbreak-scale-dot outbreak-scale-large"></span>
+              </div>
+              <div class="legend-ramp-values">
+                <span>Small</span>
+                <span>Medium</span>
+                <span>Large</span>
+              </div>
             </div>
           </div>
         </div>
